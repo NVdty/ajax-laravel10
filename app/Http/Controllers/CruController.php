@@ -54,4 +54,35 @@ class CruController extends Controller
             return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
     }
+
+    public function editCar(Request $request){
+
+         //form validation
+         $validator = Validator::make($request->all(),[
+            'name' => 'required',
+            'manufacture_year' => 'required',
+            'engine_capacity' => 'required',
+            'fuel_type' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return response()->json(['msg' => $validator->errors()->ToArray()]);
+        }else{
+            //function edit in here
+            try {
+
+                $editCar = Car::where('id', $request->car_id)->update([
+                    'name' => $request->name,
+                    'manufacture_year' => $request->manufacture_year,
+                    'engine_capacity' => $request->engine_capacity,
+                    'fuel_type' => $request->fuel_type,
+                ]);
+
+                return response()->json(['success' => true, 'msg' => 'Car updated Succesfully']);
+
+            } catch (\Exception $e) {
+                return response()->json(['success' => false, 'msg' => $e->getMessage()]);
+            }
+        }   
+    }
 }
