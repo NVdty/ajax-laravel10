@@ -43,4 +43,15 @@ class CruController extends Controller
             }
         }
     }
+
+    public function deleteCar($id){
+        try {
+            $delete_car = Car::where('id', $id)->delete();
+            //if success print msg
+            return response()->json(['success' => true, 'msg' => 'Car delete Succesfully']);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
+        }
+    }
 }
